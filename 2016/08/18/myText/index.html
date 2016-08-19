@@ -260,15 +260,17 @@ var isTriggerAnalytics = !( true && isIgnoreHost );
   });
   $(".fancybox").fancybox();
 
-var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var vegasConfig = {"animation":"random","preload­Image":true,"transition":["fade","fade2","zoomOut2","zoomOut","swirlRight","swirlRight2","swirlLeft","swirlLeft2","blur2","blur"],"timer":true,"delay":5000,"shuffle":true,"count":28};
 var unsplashConfig = {"gravity":"north"};
 // is show background images
 var turnoffBackgroundImage = false;
 
 
 
+  turnoffBackgroundImage = true;
 
-var backgroundColor = "";
+
+var backgroundColor = "D7CCC8";
 
 $(".fancybox-thumb").fancybox({
   prevEffect: 'none',
