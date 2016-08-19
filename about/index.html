@@ -16,22 +16,11 @@
   
   
   
-    <meta name="description" content="1.简介你好我是卢然,大家可以关注专题(都是一些实用技术)
-2.相关链接iOS分享: http://www.jianshu.com/collection/a92f30bed22aGitHub: https://github.com/luran2358">
+    <meta name="description" content="1.&#x7B80;&#x4ECB;&#x4F60;&#x597D;&#x6211;&#x662F;&#x5362;&#x7136;,&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x5173;&#x6CE8;&#x4E13;&#x9898;(&#x90FD;&#x662F;&#x4E00;&#x4E9B;&#x5B9E;&#x7528;&#x6280;&#x672F;)...">
   
   <title>关于我 [ 判若两人丶 ]</title>
   
   
-    <link rel="shortcut icon" href="/favicon.ico">
-  
-  
-  <link rel="stylesheet" href="/css/random.css">
-<link rel="stylesheet" href="/css/vegas.min.css">
-<link rel="stylesheet" href="/css/highlight-railscasts.css">
-<link rel="stylesheet" href="/css/jquery.fancybox.css">
-<link rel="stylesheet" href="/css/iconfont/iconfont.css">
-<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
   
 </head>
 
@@ -47,34 +36,13 @@
       <div id="brand">
         
         <a onClick="openUserCard()">
-          <img id="avatar" src="/images/lricon.jpg"/>
+          <img id="avatar" src=""/>
           <div id="homelink">判若两人丶</div>
         </a>
       </div>
       <div id="menu-list">
         <ul>
         
-        
-          
-            <li>
-          
-            <a href="/">HOME</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/archives">ARCHIVES</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/about">ABOUT</a>
-            
-          </li>
         
         </ul>
       </div>
@@ -93,8 +61,8 @@
     
       <h1 class="">关于我</h1>
       
-      <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h1><p>你好我是卢然,大家可以关注专题(都是一些实用技术)</p>
-<h2 id="2-相关链接"><a href="#2-相关链接" class="headerlink" title="2.相关链接"></a>2.相关链接</h2><p>iOS分享: <a href="http://www.jianshu.com/collection/a92f30bed22a" target="_blank" rel="external">http://www.jianshu.com/collection/a92f30bed22a</a><br>GitHub: <a href="https://github.com/luran2358" target="_blank" rel="external">https://github.com/luran2358</a></p>
+      <h1 id="1-&#x7B80;&#x4ECB;"><a href="#1-&#x7B80;&#x4ECB;" class="headerlink" title="1.&#x7B80;&#x4ECB;"></a>1.&#x7B80;&#x4ECB;</h1><p>&#x4F60;&#x597D;&#x6211;&#x662F;&#x5362;&#x7136;,&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x5173;&#x6CE8;&#x4E13;&#x9898;(&#x90FD;&#x662F;&#x4E00;&#x4E9B;&#x5B9E;&#x7528;&#x6280;&#x672F;)</p>
+<h2 id="2-&#x76F8;&#x5173;&#x94FE;&#x63A5;"><a href="#2-&#x76F8;&#x5173;&#x94FE;&#x63A5;" class="headerlink" title="2.&#x76F8;&#x5173;&#x94FE;&#x63A5;"></a>2.&#x76F8;&#x5173;&#x94FE;&#x63A5;</h2><p>iOS&#x5206;&#x4EAB;: <a href="http://www.jianshu.com/collection/a92f30bed22a" target="_blank" rel="external">http://www.jianshu.com/collection/a92f30bed22a</a><br>GitHub: <a href="https://github.com/luran2358" target="_blank" rel="external">https://github.com/luran2358</a></p>
 
     
   </article>
@@ -135,50 +103,10 @@
 
 <div id="user-card">
   <div class="center-field">
-    <img class="avatar" src="/images/lricon.jpg">
+    <img class="avatar" src="">
     <p id="description">Hello! 我是卢然, 现居北京的一个iOS开发者, 非人类般的修炼中~</p>
     <ul class="social-icon">
   
-  
-    <li>
-      <a href="http://www.jianshu.com/users/16ae66cdf6a0/latest_articles">
-        
-          简书
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://github.com/luran2358">
-        
-          <i class="icon iconfont github">&#xe606;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="http://weibo.com/u/5393251103?refer_flag=1001030101_&is_all=1">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://plus.google.com/u/0/114957194051164613409">
-        
-          <i class="icon iconfont google-plus">&#xe603;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="http://gold.xitu.io/user/57ac4835a341310060df8f68">
-        
-          掘金
-        
-      </a>
-    </li>
   
 </ul>
   </div>
@@ -190,64 +118,29 @@
 var isIgnoreHost = false;
 
 if(window && window.location && window.location.host) {
-  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+  isIgnoreHost = "".some(function(address){
     return 0 === window.location.host.indexOf(address);
   });
 }
 
-var isTriggerAnalytics = !( true && isIgnoreHost );
+var isTriggerAnalytics = !( "" && isIgnoreHost );
 
 </script>
 
 
 
 
-  
-  
-    <script src="/js/jquery-2.2.3.min.js"></script>
-  
-    <script src="/js/vegas.min.js"></script>
-  
-    <script src="/js/random.js"></script>
-  
-    <script src="/js/highlight.pack.js"></script>
-  
-    <script src="/js/jquery.mousewheel.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox-thumbs.js"></script>
-  
-    <script src="/js/plyr.js"></script>
-  
-
 <script>
 
-  // fancybox
-  var backgroundImages = [];
-  
-  $('#post').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
-      var alt = this.alt || this.title;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'post' + i);
-    });
-  });
-  $(".fancybox").fancybox();
-
-var vegasConfig = {"animation":"random","preload­Image":true,"transition":["zoomOut2","swirlLeft","fade","swirlLeft2","fade2","blur2","zoomOut","swirlRight","blur","swirlRight2"],"timer":true,"delay":2000,"shuffle":true,"count":28};
-var unsplashConfig = {"gravity":"north"};
+var vegasConfig = "";
+var unsplashConfig = "";
 // is show background images
 var turnoffBackgroundImage = false;
 
 
 
 
-var backgroundColor = "D7CCC8";
+var backgroundColor = "";
 
 $(".fancybox-thumb").fancybox({
   prevEffect: 'none',

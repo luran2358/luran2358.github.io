@@ -21,16 +21,6 @@
   <title>分类 [ 判若两人丶 ]</title>
   
   
-    <link rel="shortcut icon" href="/favicon.ico">
-  
-  
-  <link rel="stylesheet" href="/css/random.css">
-<link rel="stylesheet" href="/css/vegas.min.css">
-<link rel="stylesheet" href="/css/highlight-railscasts.css">
-<link rel="stylesheet" href="/css/jquery.fancybox.css">
-<link rel="stylesheet" href="/css/iconfont/iconfont.css">
-<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
   
 </head>
 
@@ -46,34 +36,13 @@
       <div id="brand">
         
         <a onClick="openUserCard()">
-          <img id="avatar" src="/images/lricon.jpg"/>
+          <img id="avatar" src=""/>
           <div id="homelink">判若两人丶</div>
         </a>
       </div>
       <div id="menu-list">
         <ul>
         
-        
-          
-            <li>
-          
-            <a href="/">HOME</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/archives">ARCHIVES</a>
-            
-          </li>
-        
-          
-            <li>
-          
-            <a href="/about">ABOUT</a>
-            
-          </li>
         
         </ul>
       </div>
@@ -131,50 +100,10 @@
 
 <div id="user-card">
   <div class="center-field">
-    <img class="avatar" src="/images/lricon.jpg">
+    <img class="avatar" src="">
     <p id="description">Hello! 我是卢然, 现居北京的一个iOS开发者, 非人类般的修炼中~</p>
     <ul class="social-icon">
   
-  
-    <li>
-      <a href="http://www.jianshu.com/users/16ae66cdf6a0/latest_articles">
-        
-          简书
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://github.com/luran2358">
-        
-          <i class="icon iconfont github">&#xe606;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="http://weibo.com/u/5393251103?refer_flag=1001030101_&is_all=1">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://plus.google.com/u/0/114957194051164613409">
-        
-          <i class="icon iconfont google-plus">&#xe603;</i>
-        
-      </a>
-    </li>
-  
-    <li>
-      <a href="http://gold.xitu.io/user/57ac4835a341310060df8f68">
-        
-          掘金
-        
-      </a>
-    </li>
   
 </ul>
   </div>
@@ -186,64 +115,29 @@
 var isIgnoreHost = false;
 
 if(window && window.location && window.location.host) {
-  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+  isIgnoreHost = "".some(function(address){
     return 0 === window.location.host.indexOf(address);
   });
 }
 
-var isTriggerAnalytics = !( true && isIgnoreHost );
+var isTriggerAnalytics = !( "" && isIgnoreHost );
 
 </script>
 
 
 
 
-  
-  
-    <script src="/js/jquery-2.2.3.min.js"></script>
-  
-    <script src="/js/vegas.min.js"></script>
-  
-    <script src="/js/random.js"></script>
-  
-    <script src="/js/highlight.pack.js"></script>
-  
-    <script src="/js/jquery.mousewheel.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox.pack.js"></script>
-  
-    <script src="/js/jquery.fancybox-thumbs.js"></script>
-  
-    <script src="/js/plyr.js"></script>
-  
-
 <script>
 
-  // fancybox
-  var backgroundImages = [];
-  
-  $('#post').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
-      var alt = this.alt || this.title;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'post' + i);
-    });
-  });
-  $(".fancybox").fancybox();
-
-var vegasConfig = {"animation":"random","preload­Image":true,"transition":["zoomOut2","swirlLeft","fade","swirlLeft2","fade2","blur2","zoomOut","swirlRight","blur","swirlRight2"],"timer":true,"delay":2000,"shuffle":true,"count":28};
-var unsplashConfig = {"gravity":"north"};
+var vegasConfig = "";
+var unsplashConfig = "";
 // is show background images
 var turnoffBackgroundImage = false;
 
 
 
 
-var backgroundColor = "D7CCC8";
+var backgroundColor = "";
 
 $(".fancybox-thumb").fancybox({
   prevEffect: 'none',
