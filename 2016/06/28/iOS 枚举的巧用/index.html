@@ -1,0 +1,410 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="Lu Ran">
+  
+  
+  
+  
+    <meta name="description" content="&#x524D;&#x8A00;
+&#x5728;&#x4E4B;&#x524D;&#x7684;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#x4E2D;&#x7B80;&#x5355;&#x7684;&#x63D0;&#x5230;&#x4E86;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;, &#x4F46;&#x662F;&#x81EA;&#...">
+  
+  <title>iOS 枚举的巧用 [ 判若两人丶 ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/2016/06/28/iOS 9 关键字的简单使用/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        iOS 9 关键字的简单使用
+      </div>
+    </div>
+  
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="/images/lricon.jpg"/>
+          <div id="homelink">判若两人丶</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/">HOME</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">ARCHIVES</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">ABOUT</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>iOS 枚举的巧用</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">撰写于 2016-06-28</span>
+      
+        <span id = "post-title-updated">修改于 2016-08-25</span>
+      
+      
+      
+    </p>
+    
+    <h2 id="&#x524D;&#x8A00;"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</h2><blockquote>
+<p>&#x5728;&#x4E4B;&#x524D;&#x7684;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#x4E2D;&#x7B80;&#x5355;&#x7684;&#x63D0;&#x5230;&#x4E86;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;, &#x4F46;&#x662F;&#x81EA;&#x5DF1;&#x5199;&#x7684;&#x4E0D;&#x8BE6;&#x7EC6;, &#x5E76;&#x4E14;&#x81EA;&#x5DF1;&#x6DF1;&#x5165;&#x4E86;&#x89E3;&#x7684;&#x4E5F;&#x4E0D;&#x662F;&#x7279;&#x522B;&#x591A;, &#x5728;&#x5F00;&#x53D1;&#x4E2D;&#x4E5F;&#x6CA1;&#x600E;&#x4E48;&#x7528;&#x5230;,&#x6240;&#x4EE5;&#x7ECF;&#x8FC7;&#x9605;&#x8BFB;&#x8005;&#x7684;&#x53CD;&#x9988;&#x5BF9;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x5F88;&#x662F;&#x7591;&#x60D1;! &#x672C;&#x7BC7;&#x6587;&#x7AE0;&#x4F1A;&#x5206;&#x6790;&#x4E4B;&#x524D;&#x7684;&#x4E0D;&#x8DB3;&#x4E4B;&#x5904;, &#x5982;&#x679C;&#x6709;&#x5730;&#x65B9;&#x4E0D;&#x5BF9;&#x8FD8;&#x8BF7;&#x5E2E;&#x5FD9;&#x7EA0;&#x6B63;! </p>
+</blockquote>
+<p>&#x76F8;&#x5173;&#x6587;&#x7AE0;: <a href="http://www.jianshu.com/p/a924b4a17686" target="_blank" rel="external">iOS&#x5F00;&#x53D1;&#x4E2D;&#x4F60;&#x662F;&#x5426;&#x9047;&#x5230;&#x8FD9;&#x4E9B;&#x7ECF;&#x9A8C;&#x95EE;&#x9898;(&#x4E8C;)</a></p>
+<h2 id="1-&#x4F7F;&#x7528;&#x5C42;&#x9762;&#x7684;&#x7406;&#x89E3;"><a href="#1-&#x4F7F;&#x7528;&#x5C42;&#x9762;&#x7684;&#x7406;&#x89E3;" class="headerlink" title="1.&#x4F7F;&#x7528;&#x5C42;&#x9762;&#x7684;&#x7406;&#x89E3;"></a>1.&#x4F7F;&#x7528;&#x5C42;&#x9762;&#x7684;&#x7406;&#x89E3;</h2><p>&#x5728;&#x8FD9;&#x91CC;&#x9996;&#x5148;&#x8BB2;&#x5982;&#x4F55;&#x7B80;&#x5355;&#x7684;&#x4F7F;&#x7528;, &#x4EC5;&#x4EC5;&#x662F;&#x4F7F;&#x7528;&#x5C42;&#x9762;(&#x6709;&#x7406;&#x89E3;&#x9519;&#x8BEF;&#x7684;&#x5730;&#x65B9;&#x5E2E;&#x5FD9;&#x7EA0;&#x6B63;), &#x7136;&#x540E;&#x6211;&#x4EEC;&#x5728;&#x53BB;&#x7406;&#x89E3;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;! &#x5728;&#x4E0B;&#x9762;&#x7684;&#x56FE;&#x4E2D;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x770B;&#x89C1;&#x679A;&#x4E3E;&#x503C;&#x4E2D;&#x6709;<code>&lt;&lt;</code>(&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;:&#x5DE6;&#x79FB;):</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-476df8d2cb3f2524.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5728;&#x679A;&#x4E3E;&#x503C;&#x4E2D;&#x770B;&#x89C1;<code>&lt;&lt;</code>&#x90A3;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>|</code>(&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;:&#x6216;)&#x8FDB;&#x884C;<code>&#x7EC4;&#x5408;&#x4F7F;&#x7528;</code>&#x5982;&#x4E0B;&#x4EE3;&#x7801;&#x4E3A;&#x4F8B;:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//&#x968F;&#x4FBF;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;UITextField</span></div><div class="line"><span class="built_in">UITextField</span> *field = [<span class="built_in">UITextField</span> new];</div><div class="line"><span class="comment">//Begin,Changed,DidEnd&#x90FD;&#x80FD;&#x89E6;&#x53D1;UITextField&#x7684;&#x4E8B;&#x4EF6;</span></div><div class="line">[field addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(textFieldDidChanged) forControlEvents: <span class="built_in">UIControlEventEditingDidBegin</span> |</div><div class="line">                 <span class="built_in">UIControlEventValueChanged</span> |</div><div class="line">                 <span class="built_in">UIControlEventEditingDidEnd</span></div><div class="line">    ];</div><div class="line">   </div><div class="line">[<span class="keyword">self</span>.view addSubview:field];</div></pre></td></tr></table></figure>
+<p>&#x5982;&#x4E0B;&#x56FE;&#x679A;&#x4E3E;&#x503C;&#x4E2D;&#x6CA1;&#x6709;<code>&lt;&lt;</code>,&#x8FD9;&#x5C31;&#x662F;&#x666E;&#x901A;&#x7684;<code>NSInteger</code>&#x7C7B;&#x578B;&#x7684;&#x679A;&#x4E3E;, &#x6240;&#x4EE5;&#x4E0D;&#x80FD;&#x7EC4;&#x5408;&#x4F7F;&#x7528;:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-87cc026229c4ccc0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x90A3;&#x82F9;&#x679C;&#x5B98;&#x65B9;&#x662F;&#x600E;&#x4E48;&#x77E5;&#x9053;&#x6211;&#x4EEC;&#x591A;&#x4E2A;&#x6761;&#x4EF6;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#x4E86;&#x5462;? &#x7B54;&#x6848;&#x662F;&#x901A;&#x8FC7;<code>&amp;</code>(&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;:&#x4E0E;)&#x8FDB;&#x884C;&#x5224;&#x65AD;&#x7684;:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//controlEvents&#x662F;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#x540E;&#x7684;&#x4E00;&#x4E2A;&#x503C;</span></div><div class="line"> <span class="built_in">NSUInteger</span> controlEvents = <span class="built_in">UIControlEventEditingDidBegin</span> | <span class="built_in">UIControlEventValueChanged</span> | <span class="built_in">UIControlEventEditingDidEnd</span>;</div><div class="line">    <span class="comment">/**</span></div><div class="line">    //&#x901A;&#x8FC7; &amp; &#x6765;&#x5224;&#x65AD;&#x662F;&#x5426;&#x5305;&#x542B;:</div><div class="line">    UIControlEventEditingDidBegin,</div><div class="line">    UIControlEventValueChanged,</div><div class="line">    UIControlEventEditingDidEnd</div><div class="line">     */</div><div class="line">    <span class="keyword">if</span> (controlEvents &amp; <span class="built_in">UIControlEventEditingDidBegin</span>) {</div><div class="line">        </div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;UIControlEventEditingDidBegin&quot;</span>);</div><div class="line">        </div><div class="line">    }<span class="keyword">else</span> <span class="keyword">if</span> (controlEvents &amp; <span class="built_in">UIControlEventValueChanged</span>) {</div><div class="line">        </div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;UIControlEventValueChanged&quot;</span>);</div><div class="line">        </div><div class="line">    }<span class="keyword">else</span> <span class="keyword">if</span> (controlEvents &amp; <span class="built_in">UIControlEventEditingDidEnd</span>) {</div><div class="line">        </div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;UIControlEventEditingDidEnd&quot;</span>);</div><div class="line">    }</div></pre></td></tr></table></figure>
+<p> &#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x63A5;&#x4E0B;&#x6765;&#x770B;&#x770B;&#x4F7F;&#x7528;&#x8FC7;&#x7A0B;&#x4E2D;&#x7275;&#x626F;&#x5230;&#x7684;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;, &#x6211;&#x4EEC;&#x4F1A;&#x5728;&#x4E0B;&#x9762;&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;!</p>
+<h2 id="2-&#x7406;&#x89E3;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;"><a href="#2-&#x7406;&#x89E3;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;" class="headerlink" title="2.&#x7406;&#x89E3;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;"></a>2.&#x7406;&#x89E3;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;</h2><p>&#x9996;&#x5148;&#x6211;&#x4EEC;&#x6709;&#x4E00;&#x4E2A;&#x679A;&#x4E3E;, &#x4E0B;&#x9762;&#x4EE3;&#x7801;2&#x79CD;&#x5199;&#x6CD5;&#x6211;&#x4EEC;&#x6682;&#x65F6;&#x5148;&#x4E0D;&#x7528;&#x7BA1;,&#x7B49;&#x4F4D;&#x8FD0;&#x7B97;&#x7B26;&#x8BB2;&#x5B8C;&#x6211;&#x4EEC;&#x4F1A;&#x8BA8;&#x8BBA;<code>&#x679A;&#x4E3E;&#x7684;&#x5B8F;&#x4F7F;&#x7528;</code>:</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">//typedef NS_OPTIONS(NSInteger, myTests) {</div><div class="line">//    nameA =<span class="number"> 1 </span>&lt;&lt; 0,</div><div class="line">//    nameB =<span class="number"> 1 </span>&lt;&lt; 1,</div><div class="line">//    nameC =<span class="number"> 1 </span>&lt;&lt; 2,</div><div class="line">//    nameD =<span class="number"> 1 </span>&lt;&lt; 3,</div><div class="line">//};</div><div class="line"></div><div class="line">typedef enum {</div><div class="line">    nameA =<span class="number"> 1 </span>&lt;&lt; 0,</div><div class="line">    nameB =<span class="number"> 1 </span>&lt;&lt; 1,</div><div class="line">    nameC =<span class="number"> 1 </span>&lt;&lt; 2,</div><div class="line">    nameD =<span class="number"> 1 </span>&lt;&lt; 3,</div><div class="line">    </div><div class="line">}myTests;</div><div class="line"></div><div class="line">/**</div><div class="line"> nameA =<span class="number"> 1 </span>&lt;&lt;<span class="number"> 0 </span>:&#x503C;&#x4E3A;1(2&#x7684;0&#x6B21;&#x65B9;)</div><div class="line"> nameB =<span class="number"> 1 </span>&lt;&lt;<span class="number"> 1 </span>:&#x503C;&#x4E3A;2(2&#x7684;1&#x6B21;&#x65B9;)</div><div class="line"> nameC =<span class="number"> 1 </span>&lt;&lt;<span class="number"> 2 </span>:&#x503C;&#x4E3A;4(2&#x7684;2&#x6B21;&#x65B9;)</div><div class="line"> nameD =<span class="number"> 1 </span>&lt;&lt;<span class="number"> 3 </span>:&#x503C;&#x4E3A;8(2&#x7684;3&#x6B21;&#x65B9;)</div><div class="line"> */</div></pre></td></tr></table></figure>
+<p>&#x901A;&#x8FC7;<code>&amp;</code>&#x8FDB;&#x884C;&#x5224;&#x65AD;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x770B;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#x56FE;:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-227e20bc09059900.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x6211;&#x4EEC;&#x5F97;&#x5230;<code>NSInteger value = nameA | nameB;</code>&#x7684;&#x7EC4;&#x5408;&#x7684;&#x503C;, &#x5224;&#x65AD;&#x7ED3;&#x679C;&#x662F;:<code>1</code>&#x662F;<code>nameA</code>&#x7684;&#x503C;, <code>2</code>&#x662F;<code>nameB</code>&#x7684;&#x503C;, <code>nameC</code>&#x4E0E;<code>nameD</code>&#x6CA1;&#x6709;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#x6240;&#x4EE5;&#x503C;&#x4E3A;<code>0</code>,&#x6700;&#x540E;&#x6211;&#x4EEC;&#x77E5;&#x9053;&#x5982;&#x679C;<code>value &amp; nameC</code>&#x4E3A;<code>0</code>&#x8BF4;&#x660E;<code>value</code>&#x4E0D;&#x5305;&#x542B;<code>nameC</code> &#x76F8;&#x53CD;&#x5219;&#x5305;&#x542B;!</p>
+<p>&#x8FD8;&#x6709;&#x4E00;&#x70B9;&#x5C31;&#x662F;<code>value &amp; nameA</code>&#x5C31;&#x662F;<code>nameA</code>&#x7684;&#x503C;&#x4E3A;<code>1</code>, <code>value &amp; nameB</code>&#x5C31;&#x662F;<code>nameB</code>&#x7684;&#x503C;&#x4E3A;<code>2</code></p>
+<ul>
+<li><code>&lt;&lt;</code>(&#x5DE6;&#x79FB;):<code>a &lt;&lt; b</code>&#x5C31;&#x8868;&#x793A;&#x628A;<code>a</code>&#x8F6C;&#x4E3A;&#x4E8C;&#x8FDB;&#x5236;&#x540E;&#x5DE6;&#x79FB;<code>b</code>&#x4F4D;&#xFF08;&#x5728;&#x540E;&#x9762;&#x6DFB;<code>b</code>&#x4E2A;<code>0</code>&#xFF09;</li>
+<li><code>|</code>(&#x6216;):&#x53EA;&#x8981;&#x6709;&#x4E00;&#x4E2A;&#x4E3A;<code>1</code>, &#x7ED3;&#x679C;&#x5C31;&#x662F;<code>1</code></li>
+<li><code>&amp;</code>(&#x6216;):&#x53EA;&#x8981;&#x6709;&#x4E8C;&#x4E2A;&#x4E3A;<code>1</code>, &#x7ED3;&#x679C;&#x5C31;&#x662F;<code>1</code></li>
+</ul>
+<p>&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x77E5;&#x9053;<code>nameA = 1</code>, <code>nameB = 2</code>, <code>nameC = 4</code>, <code>nameD = 8</code>&#x4E0B;&#x9762;&#x6765;&#x901A;&#x8FC7;&#x4E8C;&#x8FDB;&#x5236;&#x6765;&#x89E3;&#x91CA;:</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">NSInteger value = nameA | nameB | nameC | nameD<span class="comment">;</span></div><div class="line">    &#x8F6C;&#x6210;&#x4E8C;&#x8FDB;&#x5236;:</div><div class="line">    nameA: <span class="number">0 0 0 1</span></div><div class="line">      |</div><div class="line">    nameB: <span class="number">0 0 1 0</span></div><div class="line">      |</div><div class="line">    nameC: <span class="number">0 1 0 0</span></div><div class="line">      |</div><div class="line">    nameD: <span class="number">1 0 0 0</span></div><div class="line">   ----------------</div><div class="line">    value: <span class="number">1 1 1 1</span></div><div class="line">    &#x4E0A;&#x9762;&#x662F;&#x4F7F;&#x7528; | &#x5F97;&#x51FA;value&#x7684;&#x503C;&#x4E3A;<span class="number">1111</span>(|&#x7684;&#x610F;&#x601D;&#x662F;&#x6709;&#x4E00;&#x4E2A;&#x4E3A;<span class="number">1</span>&#x7ED3;&#x679C;&#x5C31;&#x4E3A;<span class="number">1</span>)</div><div class="line">    </div><div class="line">    </div><div class="line">    &#x4E0B;&#x9762;&#x662F;&#x4F7F;&#x7528; &amp; &#x5224;&#x65AD;&#x8F93;&#x51FA;&#x7684;&#x503C;(&amp;&#x7684;&#x610F;&#x601D;&#x5C31;&#x662F;&#x6709;&#x4E8C;&#x4E2A;&#x4E3A;<span class="number">1</span>&#x7ED3;&#x679C;&#x624D;&#x4E3A;<span class="number">1</span>)</div><div class="line">    </div><div class="line">     value: <span class="number">1 1 1 1</span>         value: <span class="number">1 1 1 1</span></div><div class="line">       &amp;                      &amp;</div><div class="line">     nameA: <span class="number">0 0 0 1</span>         nameB: <span class="number">0 0 1 0</span></div><div class="line">    ----------------       ----------------</div><div class="line">     &#x7ED3;&#x679C;&#x503C;: <span class="number">0 0 0 1</span>         &#x7ED3;&#x679C;&#x503C;: <span class="number">0 0 1 0</span></div><div class="line">    </div><div class="line">     &#x6211;&#x5C31;&#x5199;<span class="number">2</span>&#x4E2A;&#x4F8B;&#x5B50;:<span class="number">0001</span>&#x5C31;&#x662F;nameA&#x7684;&#x503C;, <span class="number">0010</span>&#x5C31;&#x662F;nameB&#x7684;&#x503C;</div></pre></td></tr></table></figure>
+<p>&#x76F8;&#x4FE1;&#x5927;&#x5BB6;&#x5DF2;&#x7ECF;&#x660E;&#x767D;&#x5176;&#x4E2D;&#x7684;&#x9053;&#x7406;&#x4E86;, &#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x770B;&#x679A;&#x4E3E;&#x7684;&#x5B8F;, &#x4E3A;&#x4E86;&#x66F4;&#x597D;&#x9605;&#x8BFB;&#x4E5F;&#x53EF;&#x4EE5;&#x770B;&#x4E0B;&#x9762;&#x7684;&#x622A;&#x56FE;:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-d269cf4285dd884a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="3-&#x679A;&#x4E3E;&#x7684;&#x5B8F;-NS-ENUM&#x4E0E;NS-OPTIONS"><a href="#3-&#x679A;&#x4E3E;&#x7684;&#x5B8F;-NS-ENUM&#x4E0E;NS-OPTIONS" class="headerlink" title="3.&#x679A;&#x4E3E;&#x7684;&#x5B8F;(NS_ENUM&#x4E0E;NS_OPTIONS)"></a>3.&#x679A;&#x4E3E;&#x7684;&#x5B8F;(<code>NS_ENUM</code>&#x4E0E;<code>NS_OPTIONS</code>)</h2><p><code>NS_ENUM</code>&#x548C;<code>NS_OPTIONS</code>&#x5B8F;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x7B80;&#x6D01;&#x3001;&#x5B9A;&#x4E49;&#x679A;&#x4E3E;&#x548C;C&#x8BED;&#x8A00;&#x9009;&#x9879;&#x7684;&#x7B80;&#x5355;&#x65B9;&#x6CD5;&#x3002;</p>
+<p>The <code>NS_ENUM</code> and <code>NS_OPTIONS</code> macros provide a concise, simple way of defining enumerations and options in C-based languages. These macros improve code completion in Xcode and explicitly specify the type and size of your enumerations and options. Additionally, this syntax declares enums in a way that is evaluated correctly by older compilers, and by newer ones that can interpret the underlying type information.</p>
+<p>&#x8FD9;&#x662F;&#x6700;&#x521D;&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x6CD5;:</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> {</span></div><div class="line">        UITableViewCellStyleDefault,</div><div class="line">        UITableViewCellStyleValue1,</div><div class="line">        UITableViewCellStyleValue2,</div><div class="line">        UITableViewCellStyleSubtitle</div><div class="line">};</div><div class="line">typedef NSInteger UITableViewCellStyle;</div><div class="line"></div><div class="line">--------------------------------------------------</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">enum</span> {</span></div><div class="line">        UIViewAutoresizingNone                 = <span class="number">0</span>,</div><div class="line">        UIViewAutoresizingFlexibleLeftMargin   = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,</div><div class="line">        UIViewAutoresizingFlexibleWidth        = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,</div><div class="line">        UIViewAutoresizingFlexibleRightMargin  = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,</div><div class="line">        UIViewAutoresizingFlexibleTopMargin    = <span class="number">1</span> &lt;&lt; <span class="number">3</span>,</div><div class="line">        UIViewAutoresizingFlexibleHeight       = <span class="number">1</span> &lt;&lt; <span class="number">4</span>,</div><div class="line">        UIViewAutoresizingFlexibleBottomMargin = <span class="number">1</span> &lt;&lt; <span class="number">5</span></div><div class="line">};</div><div class="line">typedef NSUInteger UIViewAutoresizing;</div></pre></td></tr></table></figure>
+<p>&#x901A;&#x8FC7;&#x4F7F;&#x7528;&#x679A;&#x4E3E;&#x7684;&#x5B8F;:</p>
+<p><code>NS_ENUM</code>:&#x662F;&#x7528;&#x6765;&#x58F0;&#x660E;&#x4E00;&#x822C;&#x7684;<code>NSInteger</code>(&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#x4F7F;&#x7528;<code>NSInteger</code>)&#x7C7B;&#x578B;&#x7684;&#x679A;&#x4E3E;</p>
+<p>Use the NS_ENUM macro to define enumerations, a set of values that are mutually exclusive.</p>
+<p><code>NS_OPTIONS</code>:&#x662F;&#x7528;&#x6765;&#x58F0;&#x660E;&#x4F4D;&#x63A9;&#x7801;(bitmasked)</p>
+<p>Use the NS_OPTIONS macro to define options, a set of bitmasked values that may be combined together.</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">//<span class="type">NS_ENUM</span></div><div class="line">typedef <span class="type">NS_ENUM</span>(<span class="type">NSInteger</span>, <span class="type">UITableViewCellStyle</span>) {</div><div class="line">        <span class="type">UITableViewCellStyleDefault</span>,</div><div class="line">        <span class="type">UITableViewCellStyleValue1</span>,</div><div class="line">        <span class="type">UITableViewCellStyleValue2</span>,</div><div class="line">        <span class="type">UITableViewCellStyleSubtitle</span></div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">--------------------------------------------------</span></div><div class="line"></div><div class="line">//<span class="type">NS_OPTIONS</span></div><div class="line">typedef <span class="type">NS_OPTIONS</span>(<span class="type">NSUInteger</span>, <span class="type">UIViewAutoresizing</span>) {</div><div class="line">        <span class="type">UIViewAutoresizingNone</span>                 = 0,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleLeftMargin</span>   = 1 &lt;&lt; 0,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleWidth</span>        = 1 &lt;&lt; 1,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleRightMargin</span>  = 1 &lt;&lt; 2,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleTopMargin</span>    = 1 &lt;&lt; 3,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleHeight</span>       = 1 &lt;&lt; 4,</div><div class="line">        <span class="type">UIViewAutoresizingFlexibleBottomMargin</span> = 1 &lt;&lt; 5</div><div class="line">};</div></pre></td></tr></table></figure>
+<p><code>NS_OPTIONS</code> &#x4E0E; <code>NS_ENUM</code> &#x548C; <code>enum</code> &#x662F;&#x6709;&#x4EC0;&#x4E48;&#x533A;&#x522B;&#x5462;? </p>
+<p>1.&#x901A;&#x8FC7;&#x4E0A;&#x9762;&#x4ECB;&#x7ECD;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x770B;&#x51FA;<code>enum</code>&#x53EF;&#x4EE5;&#x58F0;&#x660E;&#x4E00;&#x822C;&#x7C7B;&#x578B;&#x548C;&#x4F4D;&#x63A9;&#x7801;(bitmasked)&#x7C7B;&#x578B;</p>
+<p>2.<code>NS_ENUM</code>&#x58F0;&#x660E;&#x4E00;&#x822C;&#x7C7B;&#x578B;, <code>NS_OPTIONS</code>&#x58F0;&#x660E;&#x63A9;&#x7801;(bitmasked)&#x7C7B;&#x578B;</p>
+<p>3.&#x90A3;&#x4E48;&#x95EE;&#x9898;&#x53C8;&#x6765;&#x4E86;, &#x76F4;&#x63A5;&#x7528;<code>enum</code>&#x4E0D;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;? &#x7B54;&#x6848;&#x4E0D;&#x662F;&#x8FD9;&#x6837;&#x7684;, &#x82F9;&#x679C;&#x5EFA;&#x8BAE;&#x6211;&#x4EEC;&#x5728;OC&#x4E2D;&#x4F7F;&#x7528;<code>NS_ENUM</code>&#x4E0E;<code>NS_OPTIONS</code>, &#x4E3A;&#x4EC0;&#x4E48;&#x5462;? &#x56E0;&#x4E3A;&#x4ED6;&#x4EEC;&#x9664;&#x4E86;&#x63A8;&#x65AD;&#x51FA;&#x4E0D;&#x540C;&#x7C7B;&#x578B;&#x7684;&#x679A;&#x4E3E;,&#x518D;&#x5C31;&#x662F;&#x5F53;&#x7F16;&#x8BD1;<code>Objective-C++</code>&#x6A21;&#x5F0F;&#xFF0C;&#x5B83;&#x4EEC;&#x4EA7;&#x751F;&#x7684;&#x4EE3;&#x7801;&#x662F;&#x4E0D;&#x540C;&#x7684;, &#x5C31;&#x662F;&#x56E0;&#x4E3A;&#x4E0D;&#x540C;&#x6240;&#x4EE5;&#x6DF7;&#x7F16;&#x7684;&#x65F6;&#x5019;&#x4F7F;&#x7528;<code>enum</code>&#x4F1A;&#x62A5;&#x9519;!<br>&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x770B;&#x770B;<a href="http://stackoverflow.com/questions/18962925/what-is-the-difference-between-ns-enum-and-ns-options" target="_blank" rel="external">stackoverflow&#x4E2D;&#x7684;&#x95EE;&#x9898;&#x89E3;&#x7B54;!</a>&#x4E0D;&#x77E5;&#x9053;&#x6211;&#x7684;&#x7406;&#x89E3;&#x662F;&#x5426;&#x6709;&#x9519;&#x8BEF;, &#x5982;&#x679C;&#x6709;&#x9519;&#x8BEF;&#x8FD8;&#x5E0C;&#x671B;&#x5E2E;&#x5FD9;&#x7EA0;&#x6B63;!</p>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <div class="random-toc">
+    <h2>目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-使用层面的理解"><span class="toc-text">1.使用层面的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-理解位运算符"><span class="toc-text">2.理解位运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-枚举的宏-NS-ENUM与NS-OPTIONS"><span class="toc-text">3.枚举的宏(NS_ENUM与NS_OPTIONS)</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+    <a href="/2016/06/28/iOS 9 关键字的简单使用/" class="prev">&larr; 上一篇 iOS 9 关键字的简单使用</a>
+  
+
+  
+
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=2111113" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2111113" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+      <div class="ds-thread" data-thread-key="2016/06/28/iOS 枚举的巧用/" data-title="iOS 枚举的巧用" data-url="http://yoursite.com/2016/06/28/iOS 枚举的巧用/"></div>
+      
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by Lu Ran using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  <script type="text/javascript">
+var duoshuoQuery = {short_name:"luran"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  (document.getElementsByTagName('head')[0] 
+   || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="/images/lricon.jpg">
+    <p id="description">Hello! 我是卢然, 现居北京的一个iOS开发者, 非人类般的修炼中~</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/luran2358">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://www.jianshu.com/users/16ae66cdf6a0/latest_articles">
+        
+          简
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/u/5393251103?refer_flag=1001030101_&is_all=1">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://gold.xitu.io/user/57ac4835a341310060df8f68">
+        
+          金
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://plus.google.com/u/0/114957194051164613409">
+        
+          <i class="icon iconfont google-plus">&#xe603;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+    
+      backgroundImages.push('/images/2.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/6.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/4.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/5.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/7.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/8.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/9.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/3.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/10.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/11.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/12.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/13.jpg?imageView2/1/w/__width__/h/__height__');
+    
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"animation":"random","preload­Image":false,"transition":["zoomOut2","swirlLeft","fade","swirlLeft2","fade2","blur2","zoomOut","swirlRight","blur","swirlRight2"],"timer":true,"delay":3000,"shuffle":true,"count":24};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
