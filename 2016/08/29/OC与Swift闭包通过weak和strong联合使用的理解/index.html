@@ -1,0 +1,445 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="Lu Ran">
+  
+  
+  
+  
+    <meta name="description" content="&#x524D;&#x8A00;
+&#x672C;&#x6587;&#x4E0D;&#x4F1A;&#x8BE6;&#x7EC6;&#x4ECB;&#x7ECD;Block(&#x95ED;&#x5305;)&#x4F7F;&#x7528;&#xFF0C;&#x7F51;&#x4E0A;&#x4E5F;&#x6709;&#x5F88;&#x591A;&#x8BE6;&#x7EC6;&#x76...">
+  
+  <title>OC与Swift闭包通过weak和strong联合使用的理解 [ 判若两人丶 ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2016/08/25/iOS 枚举的巧用/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        iOS 枚举的巧用
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="/images/lricon.jpg"/>
+          <div id="homelink">判若两人丶</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/">HOME</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">ARCHIVES</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">ABOUT</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>OC与Swift闭包通过weak和strong联合使用的理解</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">撰写于 2016-08-29</span>
+      
+        <span id = "post-title-updated">修改于 2016-08-29</span>
+      
+      
+      
+    </p>
+    
+    <h2 id="&#x524D;&#x8A00;"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</h2><blockquote>
+<p>&#x672C;&#x6587;&#x4E0D;&#x4F1A;&#x8BE6;&#x7EC6;&#x4ECB;&#x7ECD;<code>Block</code>(&#x95ED;&#x5305;)&#x4F7F;&#x7528;&#xFF0C;&#x7F51;&#x4E0A;&#x4E5F;&#x6709;&#x5F88;&#x591A;&#x8BE6;&#x7EC6;&#x7684;&#x4ECB;&#x7ECD;&#x3002;&#x6211;&#x4EEC;&#x4F7F;&#x7528;<code>Block</code>&#x7ECF;&#x5E38;&#x8981;&#x6CE8;&#x610F;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x5F88;&#x65E9;&#x4EE5;&#x524D;&#x6211;&#x53EA;&#x7528;&#x5230;&#x4E86;<code>__weak</code>&#x5E76;&#x4E0D;&#x77E5;&#x9053;<code>__strong</code>&#x7528;&#x7684;&#x6709;&#x5565;&#x610F;&#x4E49;&#x5B58;&#x5728;&#x3002;&#x540E;&#x6765;&#x9047;&#x5230;&#x5751;&#x4E86;&#x624D;&#x660E;&#x767D;&#x5176;&#x4E2D;&#x7684;&#x771F;&#x7406;&#xFF01;&#x4E4B;&#x524D;&#x6587;&#x7AE0;&#x4E2D;&#x4E5F;&#x63D0;&#x5230;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x4EC5;&#x4EC5;&#x662F;&#x8BB2;&#x4E86;&#x4F7F;&#x7528;&#x5C42;&#x9762;&#xFF0C;&#x5E76;&#x6CA1;&#x6709;&#x53BB;&#x8BB2;&#x5982;&#x4F55;&#x7406;&#x89E3;&#x5176;&#x4E2D;&#x7684;&#x9053;&#x7406;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x6765;&#x7406;&#x89E3;&#x4E00;&#x4E0B;&#x3002;</p>
+</blockquote>
+<h2 id="&#x76EE;&#x5F55;"><a href="#&#x76EE;&#x5F55;" class="headerlink" title="&#x76EE;&#x5F55;"></a>&#x76EE;&#x5F55;</h2><ul>
+<li><a href="#1">OC&#x4E2D;Block&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</a><ul>
+<li><a href="#1.1"><code>__weak</code>&#x7684;&#x4F7F;&#x7528;</a></li>
+<li><a href="#1.2"><code>__weak</code> &#x4E0E; <code>__strong</code> &#x4E00;&#x8D77;&#x4F7F;&#x7528;</a></li>
+</ul>
+</li>
+<li><a href="#2">Swift &#x95ED;&#x5305;</a></li>
+</ul>
+<h2 id="1-OC&#x4E2D;Block&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><a href="#1-OC&#x4E2D;Block&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;" class="headerlink" title="1.OC&#x4E2D;Block&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;"></a>1.OC&#x4E2D;Block&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</h2><p>&#x6211;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;<code>LRShop</code>&#x7C7B;&#xFF0C;&#x5176;&#x4E2D;&#x6709;&#x4E0B;&#x9762;2&#x4E2A;&#x5C5E;&#x6027;&#xFF1A;</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *string;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="keyword">void</span>(^myBlock)();</div></pre></td></tr></table></figure>
+<p>&#x9996;&#x5148;&#x6211;&#x4EEC;&#x4ECE;&#x57FA;&#x7840;&#x4E00;&#x6B65;&#x4E00;&#x6B65;&#x53BB;&#x7406;&#x89E3;&#xFF0C;&#x5148;&#x5206;&#x6790;&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">LRShop *<span class="keyword">shop </span>= [[LRShop alloc]init]<span class="comment">;</span></div><div class="line">    <span class="keyword">shop.string </span>= @<span class="string">&quot;welcome to our company&quot;</span><span class="comment">;</span></div><div class="line">    <span class="keyword">shop.myBlock </span>= ^{</div><div class="line">        NSLog(@<span class="string">&quot;%@&quot;</span>,<span class="keyword">shop.string);</span></div><div class="line">    }<span class="comment">;</span></div><div class="line">    <span class="keyword">shop.myBlock();</span></div></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;<code>block</code>&#x4EE3;&#x7801;&#x5757;&#x7684;&#x5185;&#x90E8;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x5916;&#x9762;&#x7684;&#x5F3A;&#x5F15;&#x7528;<code>shop</code>&#x5BF9;&#x8C61;&#xFF08;&#x4E5F;&#x5C31;&#x662F;<code>shop.myBlock</code>&#x4EE3;&#x7801;&#x5757;&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x4E86;<code>NSLog(@&quot;%@&quot;,shop.string);</code>&#xFF09;&#xFF0C;<code>block</code>&#x4EE3;&#x7801;&#x5757;&#x7684;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x5F3A;&#x5F15;&#x7528;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>shop</code>&#x5BF9;&#x8C61;&#xFF01;&#x6240;&#x4EE5;&#x4E0A;&#x9762;&#x7684;<code>shop</code>&#x4E0D;&#x4F1A;&#x88AB;&#x9500;&#x6BC1;&#xFF0C;&#x9020;&#x6210;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF01;&#x4E0B;&#x9762;&#x753B;&#x4E00;&#x5F20;&#x56FE;&#x65B9;&#x4FBF;&#x53BB;&#x7406;&#x89E3;&#xFF1A;</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-f9291a74dc88fea7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x56FE;&#x4E2D;&#x7684;&#x6BCF;&#x6761;&#x6A59;&#x8272;&#x7684;&#x7EBF;&#x90FD;&#x662F;&#x5F3A;&#x5F15;&#x7528;&#x3002;<code>shop</code>&#x6307;&#x5411;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#xFF0C;&#x5185;&#x90E8;<code>myBlock</code>&#x6307;&#x5411;&#x7740;<code>Block&#x4EE3;&#x7801;&#x5757;</code>&#xFF0C;<code>string</code>&#x6307;&#x5411;&#x7740;<code>@&quot;&quot;</code>,&#x6700;&#x540E;<code>Block&#x4EE3;&#x7801;&#x5757;</code>&#x6307;&#x5411;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#x3002;</p>
+<h4 id="weak&#x7684;&#x4F7F;&#x7528;"><a href="#weak&#x7684;&#x4F7F;&#x7528;" class="headerlink" title="__weak&#x7684;&#x4F7F;&#x7528;"></a><code>__weak</code>&#x7684;&#x4F7F;&#x7528;</h4><p>&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7684;&#x95EE;&#x9898;&#x6211;&#x4EEC;&#x7B2C;&#x4E00;&#x4E2A;&#x4F1A;&#x7528;&#x5230;<code>__weak</code>&#x6211;&#x8FD9;&#x91CC;&#x58F0;&#x660E;&#x4E86;&#x4E00;&#x4E2A;&#x5B8F;&#xFF0C;<br>&#x5982;&#x679C;&#x4E0D;&#x660E;&#x767D;&#x8FD9;&#x4E2A;&#x5B8F;&#x53EF;&#x4EE5;&#x770B;<a href="http://www.jianshu.com/p/8207621ddcaa" target="_blank" rel="external">&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;</a>&#x4E2D;&#x7684;&#x7B2C;8&#x70B9;&#xFF1A;</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#define LRWeakSelf(<span class="class"><span class="keyword">type</span>)  <span class="title">__weak</span> <span class="title">typeof</span></span>(<span class="class"><span class="keyword">type</span>) <span class="title">weak</span>##<span class="title">type</span> </span>= <span class="class"><span class="keyword">type</span>;</span></div><div class="line"></div><div class="line"> LRWeakSelf(shop);</div><div class="line">    shop.myBlock = ^{</div><div class="line">        NSLog(<span class="string">@&quot;%@&quot;</span>,weakshop.string);</div><div class="line">    };</div><div class="line">    shop.myBlock();</div></pre></td></tr></table></figure>
+<p><code>Block</code>&#x5916;&#x90E8;&#x58F0;&#x660E;&#x4E86;&#x4E00;&#x4E2A;&#x5F31;&#x5F15;&#x7528;&#xFF0C;&#x5728;&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x5C31;&#x4E0D;&#x4F1A;&#x9020;&#x6210;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x6240;&#x4EE5;&#x5982;&#x679C;<code>block</code>&#x4EE3;&#x7801;&#x5757;&#x7684;&#x5185;&#x90E8;&#xFF0C;&#x4F7F;&#x7528;&#x4E86;&#x5916;&#x9762;&#x58F0;&#x660E;&#x7684;&#x7684;&#x5F31;&#x5F15;&#x7528;<code>weakshop</code>&#x5BF9;&#x8C61;&#xFF08;&#x4E5F;&#x5C31;&#x662F;<code>shop.myBlock</code>&#x4EE3;&#x7801;&#x5757;&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x4E86;<code>NSLog(@&quot;%@&quot;,weakshop.string);</code>&#xFF09;&#xFF0C;<code>block</code>&#x4EE3;&#x7801;&#x5757;&#x7684;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x5F31;&#x5F15;&#x7528;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>shop</code>&#x5BF9;&#x8C61;&#xFF01;&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x6765;&#x770B;&#x4E0B;&#x5185;&#x5B58;&#x56FE;&#xFF1A;</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-ab5192a18e62892a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x603B;&#x7ED3;&#xFF1A;<code>Block</code>&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x7684;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5982;&#x679C;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x662F;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#x90A3;&#x4E48;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#xFF0C;&#x5F15;&#x7528;&#x7740;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x3002;&#x5982;&#x679C;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x662F;<code>&#x5F31;&#x5F15;&#x7528;</code>&#x90A3;&#x4E48;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>&#x5F31;&#x5F15;&#x7528;</code>&#xFF0C;&#x5F15;&#x7528;&#x7740;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x3002;&#x5982;&#x679C;&#x8FD8;&#x662F;&#x6709;&#x70B9;&#x8FF7;&#x832B;&#x6211;&#x4EEC;&#x6700;&#x540E;&#x5728;&#x4E3E;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">self.myName = @<span class="string">&quot;&#x6211;&#x7684;&#x540D;&#x5B57;&#x662F;&#x6770;&#x514B;!&quot;</span><span class="comment">;</span></div><div class="line">LRShop *<span class="keyword">shop </span>= [[LRShop alloc]init]<span class="comment">;</span></div><div class="line">       <span class="keyword">shop.myBlock </span>= ^{</div><div class="line">            NSLog(@<span class="string">&quot;%@&quot;</span>,self.myName)<span class="comment">;</span></div><div class="line">}<span class="comment">;</span></div><div class="line"><span class="keyword">shop.myBlock();</span></div></pre></td></tr></table></figure>
+<p>&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x4F1A;&#x4E0D;&#x4F1A;&#x9020;&#x6210;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x5462;&#xFF1F;&#x7B54;&#x6848;&#x662F;&#x4E0D;&#x4F1A;&#x7684;&#xFF0C;&#x9996;&#x5148;<code>self.myName</code>&#x662F;<code>ViewController</code>&#x63A7;&#x5236;&#x5668;&#x7684;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#xFF0C;<code>Block</code>&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x7684;<code>self.myName</code>&#xFF0C;&#x5916;&#x90E8;&#x7684;<code>self.myName</code>&#x662F;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#x90A3;&#x4E48;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#x5F15;&#x7528;&#x7740;<code>self.myName</code>&#x3002;<code>Block</code>&#x5185;&#x90E8;&#x5F3A;&#x5F15;&#x7528;<code>self.myName</code>&#xFF0C;&#x4F46;&#x662F;<code>self.myName</code>&#x6CA1;&#x6709;&#x5F3A;&#x5F15;&#x7528;<code>Block</code>&#xFF01;&#x8BF4;&#x767D;&#x4E86;&#x5C31;&#x662F;&#x7C89;&#x4E1D;&#x4E0E;&#x660E;&#x661F;&#x7684;&#x5173;&#x7CFB;&#xFF0C;&#x7C89;&#x4E1D;(<code>Block</code>)&#x5355;&#x65B9;&#x9762;&#x8FFD;&#x6C42;&#x660E;&#x661F;(<code>self.myName</code>)&#xFF0C;&#x4F46;&#x662F;&#x968F;&#x4FBF;&#x7C89;&#x4E1D;&#x600E;&#x4E48;&#x5355;&#x65B9;&#x9762;&#x7684;&#x8FFD;&#x6C42;&#xFF0C;&#x660E;&#x661F;&#x90FD;&#x4E0D;&#x642D;&#x7406;&#x7C89;&#x4E1D;&#xFF01;</p>
+<h4 id="weak-&#x4E0E;-strong-&#x4E00;&#x8D77;&#x4F7F;&#x7528;"><a href="#weak-&#x4E0E;-strong-&#x4E00;&#x8D77;&#x4F7F;&#x7528;" class="headerlink" title="__weak &#x4E0E; __strong &#x4E00;&#x8D77;&#x4F7F;&#x7528;"></a><code>__weak</code> &#x4E0E; <code>__strong</code> &#x4E00;&#x8D77;&#x4F7F;&#x7528;</h4><p>&#x6211;&#x4EEC;&#x5148;&#x770B;&#x770B;&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#xFF1A;</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//2&#x4E2A;&#x5B8F;</span></div><div class="line">#define LRWeakSelf(<span class="class"><span class="keyword">type</span>)  <span class="title">__weak</span> <span class="title">typeof</span></span>(<span class="class"><span class="keyword">type</span>) <span class="title">weak</span>##<span class="title">type</span> </span>= <span class="class"><span class="keyword">type</span>;</span></div><div class="line">#define LRStrongSelf(<span class="class"><span class="keyword">type</span>)  <span class="title">__strong</span> <span class="title">typeof</span></span>(<span class="class"><span class="keyword">type</span>) <span class="title">type</span> </span>= weak##<span class="class"><span class="keyword">type</span>;</span></div><div class="line"></div><div class="line">------------------------------------------------------</div><div class="line"></div><div class="line"> 	LRShop *shop = [[LRShop alloc]init];</div><div class="line">    shop.string = <span class="string">@&quot;welcome to our company&quot;</span>;</div><div class="line">    </div><div class="line">    LRWeakSelf(shop);</div><div class="line">    shop.myBlock = ^{</div><div class="line">        LRStrongSelf(shop)</div><div class="line">        NSLog(<span class="string">@&quot;%@&quot;</span>,shop.string);</div><div class="line">    };</div><div class="line">    shop.myBlock();</div></pre></td></tr></table></figure>
+<p>&#x8868;&#x9762;&#x6765;&#x770B;&#x5916;&#x90E8;&#x4E00;&#x4E2A;&#x5F31;&#x5F15;&#x7528;&#xFF0C;&#x5185;&#x90E8;&#x4E00;&#x4E2A;&#x5F3A;&#x5F15;&#x7528;&#x90A3;&#x4E0D;&#x662F;&#x8DDF;&#x6CA1;&#x5199;&#x4E00;&#x6837;&#x4E48;&#xFF1F;&#x6211;&#x4EEC;&#x8981;&#x7406;&#x89E3;&#x4E00;&#x4E2A;&#x95EE;&#x9898;<code>LRStrongSelf(shop)</code>&#x662F;<code>Block</code>&#x5185;&#x90E8;&#x7684;&#x5F3A;&#x5F15;&#x7528;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5916;&#x90E8;&#x5F3A;&#x5F15;&#x7528;&#x3002;&#x6240;&#x4EE5;<code>Block</code>&#x5185;&#x90E8;&#x58F0;&#x660E;&#x7684;&#x5F3A;&#x5F15;&#x7528;&#x4E0D;&#x7BA1;&#x600E;&#x4E48;&#x8BBF;&#x95EE;&#x90FD;&#x662F;&#x4E0D;&#x4F1A;&#x5E72;&#x6270;&#x5916;&#x90E8;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x5F3A;&#x5F15;&#x7528;&#x3002;&#x6240;&#x4EE5;&#x6CA1;&#x6709;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x4E5F;&#x80FD;&#x8F93;&#x51FA;<code>shop.string</code>&#x770B;&#x7740;&#x8DDF;&#x4E4B;&#x524D;&#x8BB2;&#x7684;&#x4EC5;&#x4EC5;&#x4F7F;&#x7528;<code>__weak</code>&#x6CA1;&#x4EC0;&#x4E48;&#x533A;&#x522B;&#xFF0C;&#x90A3;&#x6211;&#x4EEC;&#x5728;&#x6765;&#x770B;&#x770B;&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
+<p>&#x4EC5;&#x4EC5;&#x4F7F;&#x7528;<code>LRWeakSelf(shop);</code>&#x5E76;&#x4E14;&#x5728;<code>myBlock</code>&#x4E2D;&#x589E;&#x52A0;&#x4E00;&#x4E2A;&#x5EF6;&#x8FDF;2&#x79D2;&#x5728;&#x8F93;&#x51FA;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x95EE;&#x9898;, &#x867D;&#x7136;&#x5BF9;&#x8C61;&#x9500;&#x6BC1;&#x4E86;, &#x8F93;&#x51FA;&#x7684;&#x503C;&#x5374;&#x662F;<code>null</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//&#x5F31;&#x5F15;&#x7528;</span></div><div class="line"> LRWeakSelf(shop);</div><div class="line">    shop.myBlock = ^{</div><div class="line">        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (<span class="keyword">int64_t</span>)(<span class="number">2.0</span> * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{</div><div class="line">            NSLog(@<span class="string">&quot;%@&quot;</span>,weakshop.<span class="built_in">string</span>);</div><div class="line">        });</div><div class="line">    };</div><div class="line">    shop.myBlock();</div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-0a71a7b33f4010c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x5982;&#x679C;<code>LRWeakSelf(shop);</code>&#x4E0E;<code>LRStrongSelf(shop);</code>&#x4E00;&#x8D77;&#x4F7F;&#x7528;&#x8F93;&#x51FA;&#x7684;<code>shop.string</code>&#x6709;&#x503C;,&#x5BF9;&#x8C61;&#x4E5F;&#x9500;&#x6BC1;&#x4E86;&#xFF1A;</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">LRWeakSelf(<span class="keyword">shop);</span></div><div class="line">    <span class="keyword">shop.myBlock </span>= ^{</div><div class="line">        LRStrongSelf(<span class="keyword">shop)</span></div><div class="line">        <span class="keyword">dispatch_after(dispatch_time(DISPATCH_TIME_NOW, </span>(int64_t)(<span class="number">2</span>.<span class="number">0</span> * NSEC_PER_SEC)), <span class="keyword">dispatch_get_main_queue(), </span>^{</div><div class="line">            NSLog(@<span class="string">&quot;%@&quot;</span>,<span class="keyword">shop.string);</span></div><div class="line">        })<span class="comment">;</span></div><div class="line">    }<span class="comment">;</span></div><div class="line">    <span class="keyword">shop.myBlock();</span></div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-c1696fcf48988ab8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x90A3;&#x8FD9;&#x53C8;&#x662F;&#x4EC0;&#x4E48;&#x539F;&#x56E0;&#x5462;&#xFF1F;&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x753B;&#x4E2A;&#x5185;&#x5B58;&#x56FE;&#x6765;&#x770B;&#x770B;&#xFF1A;</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-7f1b4754ec8805ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x989D;~ &#x8FD9;&#x56FE;&#x6709;&#x70B9;&#x4E71;&#x554A;&#xFF0C;&#x90A3;&#x5C31;&#x6765;&#x4E00;&#x6B65;&#x4E00;&#x6B65;&#x5206;&#x6790;&#xFF0C;&#x5206;&#x6790;&#x5B8C;&#x4E4B;&#x540E;&#x4E0A;&#x9762;&#x6240;&#x6709;&#x7684;&#x95EE;&#x9898;&#x5C31;&#x4F1A;&#x8FCE;&#x9762;&#x800C;&#x89E3;&#xFF01;</p>
+<ul>
+<li>1.<code>LRShop *shop = [[LRShop alloc]init];</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#x4E00;&#x6267;&#x884C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x56FE;&#x4E2D;&#x7B2C;1&#x6761;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#x3002;</li>
+<li>2.<code>LRWeakSelf(shop);</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#x4E00;&#x6267;&#x884C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x56FE;&#x4E2D;&#x7B2C;2&#x6761;&#x5F31;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#xFF0C;&#x7B2C;3&#x6761;&#x7EBF;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8DF3;&#x8FC7;&#x4E0D;&#x7528;&#x770B;&#x3002;</li>
+<li>3.<code>shop.myBlock = ^{}</code>&#x8FD9;&#x884C;<code>Block</code>&#x4EE3;&#x7801;&#x4E00;&#x6267;&#x884C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x56FE;&#x4E2D;&#x7B2C;4&#x6761;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#x3002;</li>
+<li>4.&#x4E4B;&#x540E;&#x4F1A;&#x6267;&#x884C;<code>shop.myBlock();</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#xFF0C;&#x56DE;&#x8C03;&#x5230;<code>Block</code>&#x4EE3;&#x7801;&#x5757;&#x4E2D;&#xFF0C;&#x7136;&#x540E;&#x4F1A;&#x6267;&#x884C;<code>LRStrongSelf(shop)</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#xFF0C;&#x5728;&#x6267;&#x884C;&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#x524D;&#x4F1A;&#x81EA;&#x52A8;&#x4EA7;&#x751F;&#x7B2C;5&#x6761;&#x5F31;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>(&#x539F;&#x56E0;&#xFF1A;<code>Block</code>&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x7684;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5982;&#x679C;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x662F;<code>&#x5F31;&#x5F15;&#x7528;</code>&#x90A3;&#x4E48;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>&#x5F31;&#x5F15;&#x7528;</code>&#xFF0C;&#x5F15;&#x7528;&#x7740;&#x5916;&#x90E8;&#x5BF9;&#x8C61;)&#xFF0C;&#x6700;&#x540E;&#x5C31;&#x4EA7;&#x751F;&#x7B2C;6&#x6761;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#x3002;</li>
+<li>5.<code>dispatch_after</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#x4E00;&#x6267;&#x884C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x56FE;&#x4E2D;&#x7B2C;7&#x6761;<code>GCD</code>&#x7CFB;&#x7EDF;&#x5185;&#x90E8;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>dispatch_after</code>&#x3002;</li>
+<li>6.&#x7531;&#x4E8E;<code>GCD</code>&#x7684;<code>dispatch_after</code>&#x4EE3;&#x7801;&#x5757;&#x5185;&#x90E8;&#x7528;&#x5230;<code>NSLog(@&quot;%@&quot;,shop.string);</code>&#x7528;&#x5230;&#x4E86;&#x5916;&#x90E8;&#x7684;&#x5F3A;&#x5F15;&#x7528;&#x5BF9;&#x8C61;<code>shop</code>(&#x539F;&#x56E0;&#xFF1A;<code>Block</code>&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x5916;&#x90E8;&#x7684;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5982;&#x679C;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x662F;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#x90A3;&#x4E48;&#x5185;&#x90E8;&#x4F1A;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A;<code>&#x5F3A;&#x5F15;&#x7528;</code>&#xFF0C;&#x5F15;&#x7528;&#x7740;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#x3002;)&#x6240;&#x4EE5;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x56FE;&#x4E2D;&#x7B2C;8&#x6761;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x7EBF;&#xFF0C;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#x3002;</li>
+</ul>
+<p>&#x4E0A;&#x9762;6&#x6761;&#x662F;&#x5982;&#x4F55;&#x521B;&#x5EFA;&#x7684;&#xFF0C;&#x4E0B;&#x9762;&#x662F;&#x5982;&#x4F55;&#x91CA;&#x653E;&#x7684;&#xFF1A;</p>
+<ul>
+<li>1.<code>dispatch_after</code>&#x7684;<code>Block</code>&#x5185;&#x90E8;&#x4F1A;&#x5EF6;&#x8FDF;2&#x79D2;&#x6267;&#x884C;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x4F1A;&#x963B;&#x585E;&#x7EBF;&#x7A0B;&#xFF0C;&#x6240;&#x4EE5;&#x4EFB;&#x52A1;&#x4F1A;&#x4E00;&#x76F4;&#x5F80;&#x4E0B;&#x8D70;&#xFF0C;&#x5F53;<code>shop.myBlock = ^{}</code>&#x7684;<code>Block</code>&#x5927;&#x62EC;&#x53F7;&#x6267;&#x884C;&#x5B8C;&#xFF0C;&#x5185;&#x90E8;&#x7684;&#x5C40;&#x90E8;&#x53D8;&#x91CF;<code>LRStrongSelf(shop)</code>&#x5C31;&#x4F1A;&#x9500;&#x6BC1;&#xFF0C;&#x7B2C;6&#x6761;&#x7EBF;&#x5C31;&#x4F1A;&#x9500;&#x6BC1;&#x3002;</li>
+<li>2.&#x6700;&#x7EC8;<code>- (void)viewDidLoad {}</code>&#x7684;&#x5927;&#x62EC;&#x53F7;&#x4E5F;&#x4F1A;&#x6267;&#x884C;&#x5B8C;&#xFF0C;&#x6240;&#x4EE5;<code>LRShop *shop = [[LRShop alloc]init];</code>&#x4E0E; <code>LRWeakSelf(shop);</code>&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x4E5F;&#x4F1A;&#x9500;&#x6BC1;&#xFF0C;&#x7B2C;1&#x6761;&#x7EBF;&#x4E0E;&#x7B2C;2&#x6761;&#x7EBF;&#x90FD;&#x4F1A;&#x9500;&#x6BC1;&#x3002;</li>
+<li>3.&#x73B0;&#x5728;&#x53EA;&#x5269;&#x4E0B;<code>GCD</code>&#x7684;&#x7B2C;8&#x6761;&#x7EBF;&#x5F3A;&#x5F15;&#x7528;&#x7740;<code>LRShop&#x5BF9;&#x8C61;</code>&#xFF0C;&#x6240;&#x4EE5;<code>LRShop&#x5BF9;&#x8C61;</code>&#x6CA1;&#x6709;&#x9500;&#x6BC1;&#xFF0C;&#x53EA;&#x6709;&#x7B49;&#x5F85;&#x7684;2&#x79D2;&#x7ED3;&#x675F;&#x540E;&#xFF0C;&#x56E0;&#x4E3A;<code>LRShop&#x5BF9;&#x8C61;</code>&#x6CA1;&#x6709;&#x6B7B;&#x6240;&#x4EE5;&#x8F93;&#x51FA;&#x6709;&#x503C;&#xFF0C;&#x7136;&#x540E;<code>GCD</code>&#x7CFB;&#x7EDF;&#x5185;&#x90E8;&#x4E0D;&#x4F1A;&#x518D;&#x53BB;&#x5F3A;&#x5F15;&#x7528;<code>dispatch_after</code>&#x7684;<code>Block</code>&#xFF0C;&#x9996;&#x5148;&#x7B2C;7&#x6761;&#x7EBF;&#x9500;&#x6BC1;&#xFF0C;&#x7B2C;8&#x6761;&#x7EBF;&#x5728;&#x9500;&#x6BC1;&#x3002;&#x6700;&#x540E;&#x6CA1;&#x6709;&#x4EBA;&#x5F3A;&#x5F15;&#x7528;<code>LRShop&#x5BF9;&#x8C61;</code>&#x6240;&#x4EE5;&#x5168;&#x90E8;&#x9500;&#x6BC1;&#xFF01;</li>
+</ul>
+<h2 id="2-Swift-&#x95ED;&#x5305;"><a href="#2-Swift-&#x95ED;&#x5305;" class="headerlink" title="2.Swift &#x95ED;&#x5305;"></a>2.Swift &#x95ED;&#x5305;</h2><p>&#x5728;Swift&#x4E2D;&#x89E3;&#x51B3;&#x95ED;&#x5305;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x6709;&#x4E09;&#x79CD;&#x529E;&#x6CD5;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x770B;&#xFF1A;</p>
+<ul>
+<li>1.<code>weak var weakShop = shop</code>&#x65B9;&#x5F0F;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x5728;&#x5E73;&#x65F6;&#x5F00;&#x53D1;&#x4E2D;&#x6211;&#x4EEC;&#x4E0D;&#x7528;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x7528;&#x8D77;&#x6765;&#x5F88;&#x9EBB;&#x70E6;&#xFF01;</li>
+</ul>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shop : LRShop = LRShop()</div><div class="line">weak <span class="keyword">var</span> weakShop = shop</div><div class="line">shop.myBlock = {<span class="function"><span class="params">(str : String)</span> -&gt;</span> () <span class="keyword">in</span></div><div class="line">    weakShop?.string = str</div><div class="line">    <span class="built_in">print</span>((weakShop?.string)!)</div><div class="line">}</div><div class="line">shop.myBlock!(str: <span class="string">&quot;&#x54C8;&#x55BD;&#xFF0C;&#x4F60;&#x597D;&#xFF01;&quot;</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>2.<code>[unowned shop]</code>&#x65B9;&#x5F0F;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x5728;&#x5E73;&#x65F6;&#x5F00;&#x53D1;&#x4E2D;&#x6211;&#x4EEC;&#x4E0D;&#x7528;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x662F;&#x5F88;&#x5371;&#x9669;&#x7684;&#xFF01;</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shop : LRShop = LRShop()    </div><div class="line">   shop.myBlock = {[unowned shop] (<span class="keyword">str</span> : <span class="built_in">String</span>) -&gt; () <span class="keyword">in</span></div><div class="line">        shop.string = <span class="keyword">str</span></div><div class="line">        print(shop.string!)</div><div class="line">    }</div><div class="line">    shop.myBlock!(<span class="keyword">str</span>: <span class="string">&quot;&#x54C8;&#x55BD;&#xFF0C;&#x4F60;&#x597D;&#xFF01;&quot;</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>3.<code>[weak self]</code>&#x65B9;&#x5F0F;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x5728;&#x5E73;&#x65F6;&#x5F00;&#x53D1;&#x4E2D;&#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x7528;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x8FD9;&#x4E2A;&#x65B9;&#x5F0F;&#x53EA;&#x662F;&#x4E00;&#x79CD;&#x7B80;&#x4FBF;&#x7684;&#x5199;&#x6CD5;&#xFF01;</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shop : LRShop = LRShop()</div><div class="line">shop.myBlock = {[weak shop] (<span class="keyword">str</span> : <span class="built_in">String</span>) -&gt; () <span class="keyword">in</span></div><div class="line">        shop?.string = <span class="keyword">str</span></div><div class="line">        print((shop?.string)!)</div><div class="line">}</div><div class="line">shop.myBlock!(<span class="keyword">str</span>: <span class="string">&quot;&#x54C8;&#x55BD;&#xFF0C;&#x4F60;&#x597D;&#xFF01;&quot;</span>)</div></pre></td></tr></table></figure>
+<p>&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x90FD;&#x80FD;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x95EE;&#x9898;&#xFF0C;&#x4E0B;&#x56FE;<code>deinit</code>&#x76F8;&#x5F53;OC&#x4E2D;&#x7684;<code>dealloc</code>&#x65B9;&#x6CD5;:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-3a2be2031873a49e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x90A3;&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x77E5;&#x9053;<code>Swift</code>&#x4E2D;&#x7528;<code>weak</code>&#x4E5F;&#x80FD;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4E0D;&#x53EF;&#x4EE5;<code>weak</code>&#x4E0E;<code>strong</code>&#x4E00;&#x8D77;&#x4F7F;&#x7528;&#x5462;&#xFF1F;&#x6211;&#x627E;&#x4E86;&#x6CA1;&#x6709;<code>strong</code>&#x8FD9;&#x4E2A;&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x90A3;&#x6211;&#x4EEC;&#x8BE5;&#x5982;&#x4F55;&#x89E3;&#x51B3;&#x4E0B;&#x9762;&#x5EF6;&#x8FDF;2&#x79D2;&#x540E;&#x5728;&#x6267;&#x884C;&#x4EFB;&#x52A1;&#x7684;&#x95EE;&#x9898;&#x5462;&#xFF1A;</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shop : LRShop = LRShop()</div><div class="line">        </div><div class="line">    shop.myBlock = {[weak shop] (str : <span class="keyword">String</span>) -&gt; () in</div><div class="line">            <span class="comment">//&#x65F6;&#x95F4;&#x8BBE;&#x7F6E;</span></div><div class="line">            <span class="keyword">let</span> <span class="built_in">time</span>: NSTimeInterval = <span class="number">2.0</span></div><div class="line">            <span class="comment">//GCD&#xFF1A;&#x5EF6;&#x8FDF;2&#x79D2;</span></div><div class="line">            dispatch_after(dispatch_time(DISPATCH_TIME_NOW,</div><div class="line">                    Int64(<span class="built_in">time</span> * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {</div><div class="line">                        shop?.<span class="keyword">string</span> = str</div><div class="line">                        <span class="keyword">print</span>((shop?.<span class="keyword">string</span>))</div><div class="line">            }</div><div class="line">        }</div><div class="line">        shop.myBlock!(str: <span class="string">&quot;&#x54C8;&#x55BD;&#xFF0C;&#x4F60;&#x597D;&#xFF01;&quot;</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-96e10fe2daca4f9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x6211;&#x89C9;&#x5F97;&#x65E2;&#x7136;&#x6CA1;&#x6709;<code>strong</code>&#x90A3;&#x80AF;&#x5B9A;&#x4F1A;&#x6709;&#x5176;&#x4ED6;&#x529E;&#x6CD5;&#x6765;&#x89E3;&#x51B3;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x65E2;&#x7136;&#x53EA;&#x7F3A;&#x5C11;&#x4E00;&#x4E2A;&#x5F3A;&#x5F15;&#x7528;&#xFF0C;&#x90A3;&#x6211;&#x5C31;&#x58F0;&#x660E;&#x4E00;&#x4E2A;&#x5F3A;&#x5F15;&#x7528;&#x7ED9;&#x4ED6;&#x7528;&#xFF1A;</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">let strongShop</span> = shop;</div></pre></td></tr></table></figure>
+<p>&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x5C31;&#x662F;&#x6211;&#x5728;&#x95ED;&#x5305;&#x5185;&#x90E8;&#x58F0;&#x660E;&#x7684;&#x4E00;&#x4E2A;<code>strongShop</code>&#x5F3A;&#x5F15;&#x7528;&#xFF0C;&#x8BE6;&#x7EC6;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shop : LRShop = LRShop()</div><div class="line">   </div><div class="line">   shop.myBlock = {[weak shop] (str : <span class="keyword">String</span>) -&gt; () in</div><div class="line">   	  <span class="comment">//&#x5F3A;&#x5F15;&#x7528;</span></div><div class="line">       <span class="keyword">let</span> strongShop = shop;</div><div class="line">       </div><div class="line">       <span class="comment">//&#x65F6;&#x95F4;&#x8BBE;&#x7F6E;</span></div><div class="line">       <span class="keyword">let</span> <span class="built_in">time</span>: NSTimeInterval = <span class="number">2</span></div><div class="line">       <span class="comment">//GCD&#xFF1A;&#x5EF6;&#x8FDF;2&#x79D2;</span></div><div class="line">       dispatch_after(dispatch_time(DISPATCH_TIME_NOW,</div><div class="line">           Int64(<span class="built_in">time</span> * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {</div><div class="line">               <span class="comment">//&#x8D4B;&#x503C;</span></div><div class="line">               strongShop?.<span class="keyword">string</span> = str</div><div class="line">               <span class="comment">//&#x6253;&#x5370;&#x8F93;&#x51FA;</span></div><div class="line">               <span class="keyword">print</span>((strongShop?.<span class="keyword">string</span>)!)</div><div class="line">       }</div><div class="line">   }</div><div class="line">   shop.myBlock!(str: <span class="string">&quot;&#x54C8;&#x55BD;&#xFF0C;&#x4F60;&#x597D;&#xFF01;&quot;</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/2353624-b43860256dacb81b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<blockquote>
+<p>&#x4E0D;&#x7BA1;&#x5728;<code>OC</code>&#x4E2D;&#x8FD8;&#x662F;<code>Swift</code>&#x4E2D;&#x6211;&#x4EEC;&#x90FD;&#x89E3;&#x51B3;&#x4E86;<code>Block</code>(&#x95ED;&#x5305;)&#x4E2D;&#x5982;&#x4F55;&#x4F18;&#x96C5;&#x7684;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x95EE;&#x9898;&#xFF0C;&#x5E76;&#x4E14;&#x4E5F;&#x4E86;&#x89E3;&#x4E86;&#x9020;&#x6210;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7684;&#x5185;&#x5B58;&#x8868;&#x73B0;&#x5F62;&#x5F0F;&#x3002;&#x4E0A;&#x9762;&#x5728;<code>Swift</code>&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x6709;&#x66F4;&#x597D;&#x7684;&#x529E;&#x6CD5;&#x8FD8;&#x8BF7;&#x5927;&#x795E;&#x591A;&#x591A;&#x6307;&#x6559;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x9519;&#x8BEF;&#x7684;&#x5730;&#x65B9;&#x5E2E;&#x5FD9;&#x7EA0;&#x6B63;&#xFF0C;&#x975E;&#x5E38;&#x611F;&#x8C22;&#xFF01;</p>
+</blockquote>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <div class="random-toc">
+    <h2>目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-OC中Block的循环引用"><span class="toc-text">1.OC中Block的循环引用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#weak的使用"><span class="toc-text">__weak的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#weak-与-strong-一起使用"><span class="toc-text">__weak 与 __strong 一起使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Swift-闭包"><span class="toc-text">2.Swift 闭包</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2016/08/25/iOS 枚举的巧用/" class="next">下一篇 iOS 枚举的巧用 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=2111113" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2111113" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+      <div class="ds-thread" data-thread-key="2016/08/29/OC与Swift闭包通过weak和strong联合使用的理解/" data-title="OC与Swift闭包通过weak和strong联合使用的理解" data-url="http://yoursite.com/2016/08/29/OC与Swift闭包通过weak和strong联合使用的理解/"></div>
+      
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by Lu Ran using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  <script type="text/javascript">
+var duoshuoQuery = {short_name:"luran"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  (document.getElementsByTagName('head')[0] 
+   || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="/images/lricon.jpg">
+    <p id="description">Hello! 我是卢然, 现居北京的一个iOS开发者, 非人类般的修炼中~</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/luran2358">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/u/5393251103?refer_flag=1001030101_&is_all=1">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://plus.google.com/u/0/114957194051164613409">
+        
+          <i class="icon iconfont google-plus">&#xe603;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://www.jianshu.com/users/16ae66cdf6a0/latest_articles">
+        
+          <i class="icon iconfont jian">&#xe610;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://gold.xitu.io/user/57ac4835a341310060df8f68">
+        
+          稀土掘金
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+    
+      backgroundImages.push('/images/2.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/6.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/4.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/5.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/7.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/8.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/9.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/3.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/10.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/11.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/12.jpg?imageView2/1/w/__width__/h/__height__');
+    
+      backgroundImages.push('/images/13.jpg?imageView2/1/w/__width__/h/__height__');
+    
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"animation":"random","preload­Image":false,"transition":["zoomOut2","swirlLeft","fade","swirlLeft2","fade2","blur2","zoomOut","swirlRight","blur","swirlRight2"],"timer":true,"delay":3000,"shuffle":true,"count":24};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
